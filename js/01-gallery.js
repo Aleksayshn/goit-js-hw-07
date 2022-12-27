@@ -10,9 +10,9 @@ galleryItemsEl.insertAdjacentHTML('beforeend', galleryMarkup);
 galleryItemsEl.addEventListener('click', onImageClick)
 
 function createGalleryImage(images) {
-    return images
-    .map(({preview, original, description}) => {
-           return`
+  return images
+    .map(({ preview, original, description }) => {
+      return `
     <div class="gallery__item">
   <a class="gallery__link" href="${original}">
     <img
@@ -24,20 +24,28 @@ function createGalleryImage(images) {
   </a>
 </div> `;
     })
-    .join('');    
+    .join('');
 }
 
 function onImageClick(ev) {
-if (ev.target.nodeName !== 'IMG') {
+  if (ev.target.nodeName !== 'IMG') {
     return
-} 
+  }
 
-ev.preventDefault();
+  ev.preventDefault();
 
-const largeImage = ev.target.closest('.gallery__link').href;
-console.log(largeImage);
+  const largeImage = ev.target.closest('.gallery__link').href;
 
   const instance = basicLightbox.create(`
-    <img src="${largeImage}" width="800" height="600">`)
-    .show();
-}    
+    <img src="${largeImage}" width="800" height="600">`);
+  instance.show();
+
+  window.addEventListener('keydown', onEscKeyPress);
+
+  function onEscKeyPress(ev) {
+    if (ev.code === 'Escape') {
+      window.removeEventListener('keydown', onEscKeyPress);
+      instance.close();
+    }
+  }
+}
