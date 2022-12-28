@@ -3,33 +3,47 @@ import { galleryItems } from './gallery-items.js';
 
 console.log(galleryItems);
 
-const galleryItemsEl = document.querySelector('.gallery');
+(() => {
+    const galleryItemsEl = document.querySelector(".gallery");
+    const galleryMarkup = galleryItems
+      .reduce((acc, { original, preview, description }) => 
+      acc += `<a class="gallery__item" href="${original}">
+              <img 
+                  class="gallery__image"
+                  src="${preview}"
+                  alt="${description}" 
+              />
+          </a>`, "");
 
-const galleryMarkup = createGalleryMarkup(galleryItems);
-galleryItemsEl.insertAdjacentHTML('beforeend', galleryMarkup);
+    galleryItemsEl.insertAdjacentHTML("beforeend", galleryMarkup);
+  
+    new SimpleLightbox(".gallery .gallery__item", {
+      captionsData: "alt",
+      captionDelay: 250,
+    });
+  })();
 
-function createGalleryMarkup(galleryItems) {
-    return galleryItems.reduce((acc, { original, preview, description }) => 
-    acc += `<a class="gallery__item" href="${original}">
-            <img 
-                class="gallery__image"
-                src="${preview}"
-                alt="${description}" 
-            />
-        </a>`, "");
-}
 
-const lightbox = new SimpleLightbox (".gallery a", {
-    captionSelector: ".gallery__image", 
-    captionsData: "alt",
-    captionDelay: 250,
-  });
+// const galleryItemsEl = document.querySelector('.gallery');
 
-//   window.addEventListener('keydown', onEscKeyPress)
+// const galleryMarkup = createGalleryMarkup(galleryItems);
+// galleryItemsEl.insertAdjacentHTML('beforeend', galleryMarkup);
 
-//   function onEscKeyPress(ev) {
-//     if (ev.code === 'Escape') {
-//     lightbox.close();
-//     }
-//   }
+// function createGalleryMarkup(galleryItems) {
+//     return galleryItems.reduce((acc, { original, preview, description }) => 
+//     acc += `<a class="gallery__item" href="${original}">
+//             <img 
+//                 class="gallery__image"
+//                 src="${preview}"
+//                 alt="${description}" 
+//             />
+//         </a>`, "");
+// }
+
+// const lightbox = new SimpleLightbox (".gallery a", {
+//     captionSelector: ".gallery__image", 
+//     captionsData: "alt",
+//     captionDelay: 250,
+//   });
+
 
